@@ -4,7 +4,12 @@ using System.Text;
 
 namespace Projekti_Players_and_teams_
 {
-    class Player
+    class Player : Person 
     {
+       
+
+        public Player(string firstName, string lastName, string team) : base(firstName, lastName, team)
+        {
+        }
     }
 }
