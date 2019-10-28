@@ -21,7 +21,13 @@ namespace Projekti_Players_and_teams_
         public string GetNameAndTeam()
 
         {
-            return _firstName + " " + _lastName + " is playing for " + _team;
+            
+            return _firstName + " " + _lastName + " playing for " + _team;
+        }
+        public string GetName()
+
+        {
+            return _firstName;
         }
      }  
 }
