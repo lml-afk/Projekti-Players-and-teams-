@@ -2,22 +2,35 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Npgsql;
 
 namespace Projekti_Players_and_teams_
 {
     class Program
     {
-        static void Menu()
+
+  
+        static void Menu()  //Konsolitulostus, valitaan toiminto
 
         {
-            //Konsolitulostus, valitaan toiminto
-
             Console.WriteLine(" 1 - Add new player");
             Console.WriteLine(" 2 - Add new manager");
             Console.WriteLine(" 3 - Print list of players");
             Console.WriteLine(" 4 - Print list of managers");
-            Console.WriteLine(" 5 - Quit");
+            Console.WriteLine(" 5 - Sort players by score" );
+            Console.WriteLine(" 6 - Quit");
+
+            //Console.WriteLine(" ? - Sort by score");
         }
+       static void TeamMenu() // Joukkueenvalinta tulostus
+        {
+            Console.WriteLine("Choose team 1-4");
+            Console.WriteLine(" 1 - jumoon pallo");
+            Console.WriteLine(" 2 - juvan veto");
+            Console.WriteLine(" 3 - nurmon näppi");
+            Console.WriteLine(" 4 - iisalmen kisailijat");
+        }
+
 
         static void Main(string[] args)
         {
@@ -26,7 +39,8 @@ namespace Projekti_Players_and_teams_
             List<Player> playerList = new List<Player>();       //Luodaan Player lista
             do
             {
-                Menu();
+                
+                Menu();  //Tulostetaan valikko
                 input = int.Parse(Console.ReadLine());
                 switch (input)
                 
@@ -36,8 +50,27 @@ namespace Projekti_Players_and_teams_
                         string firstName = Console.ReadLine();
                         Console.WriteLine("Insert last name");
                         string lastName = Console.ReadLine();
-                        Console.WriteLine("Insert team name");
-                        string team = Console.ReadLine();
+                        TeamMenu();
+                        int menuinput = int.Parse(Console.ReadLine());
+                        string team = "";
+
+                        if (menuinput == 1)
+                        {
+                            team = "jumoon pallo"; 
+                        }
+                        else if (menuinput == 2)
+                        {
+                            team = "juvan veto";
+                        }
+                        else if (menuinput == 3)
+                        {
+                            team = "nurmon näppi";
+                        }
+                        else if (menuinput == 4)
+                        {
+                            team = "iisalmen kisailijat";
+                        }
+                    
                         Player newPlayer = new Player(firstName, lastName, team);
                         playerList.Add(newPlayer);
                         Console.WriteLine($"New Player {newPlayer.GetNameAndTeam()} added.");
@@ -60,6 +93,7 @@ namespace Projekti_Players_and_teams_
                         foreach (Player player in playerList)  //Tulostetaan playerList
                         {
                             Console.WriteLine($"{player.GetNameAndTeam()}");
+
                         }
                         break;
 
@@ -67,15 +101,22 @@ namespace Projekti_Players_and_teams_
                         foreach (Manager manager in managerList)  //Tulostetaan managerList
                         {
                             Console.WriteLine($"{manager.GetNameAndTeam()}");
+
                         }
                         break;
+
                     case 5:
+                        foreach (Player player in playerList)  //Tulostetaan playerList
+                        {
+                            Console.WriteLine($"{player.GetPlayerId()}");
+                        }
                         break;
                     default:
                         break;
                 }
             } while (input > 0);
 
+            
             
 
         }
@@ -88,13 +129,17 @@ namespace Projekti_Players_and_teams_
 
 
 
+/*
+  var connString = "Host=localhost;Username=postgres;Password=postgres;Database=testi";
 
+            using (var conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand("SELECT * FROM testi", conn))
+                using (var reader = cmd.ExecuteReader())
+                while (reader.Read())
+                Console.WriteLine(reader.GetString(1));
 
+            }
 
-
-
-//Player firstPlayer = new Player("esa","matti","jumoon pallo");
-//Console.WriteLine(firstPlayer.GetNameAndTeam());
-
-// Manager firstManager = new Manager("jami", "matti","jumoon pallo");
-//Console.WriteLine(firstManager.GetNameAndTeam());
+ */
