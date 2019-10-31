@@ -14,17 +14,24 @@ namespace Projekti_Players_and_teams_
        
 
 
-        public Player(string firstName, string lastName, string team) : base(firstName, lastName, team)
+        public Player(string firstName, string lastName, string team, int playerScore) : base(firstName, lastName, team)
         {
-           
+            
+
             _playerId++;
             _playerId = playerId;
         }
 
         
-        public int GetPlayerId()
+        public int GetPlayerId(int playerId)
         {
             return playerId;
+        }
+        
+        public int GetPlayerScore(int playerScore)
+        {
+            _playerScore = playerScore;
+            return playerScore;
         }
     }
 }

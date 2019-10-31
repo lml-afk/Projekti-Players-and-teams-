@@ -41,7 +41,16 @@ namespace Projekti_Players_and_teams_
             {
                 
                 Menu();  //Tulostetaan valikko
-                input = int.Parse(Console.ReadLine());
+                try
+                {
+                    input = int.Parse(Console.ReadLine());
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Error, please insert A number ({ ex.Message }).");
+                }
+
+
                 switch (input)
                 
                 {
@@ -70,10 +79,13 @@ namespace Projekti_Players_and_teams_
                         {
                             team = "iisalmen kisailijat";
                         }
-                    
-                        Player newPlayer = new Player(firstName, lastName, team);
+
+                        Console.WriteLine("Player score?");
+                        int score = int.Parse(Console.ReadLine());
+
+                        Player newPlayer = new Player(firstName, lastName, team,score);
                         playerList.Add(newPlayer);
-                        Console.WriteLine($"New Player {newPlayer.GetNameAndTeam()} added.");
+                        Console.WriteLine($"New Player {newPlayer.GetNameAndTeam()} added. Score is {newPlayer.GetPlayerScore()}");
                         break;
 
                     case 2:
@@ -92,23 +104,27 @@ namespace Projekti_Players_and_teams_
 
                         foreach (Player player in playerList)  //Tulostetaan playerList
                         {
+                            Console.WriteLine("");
                             Console.WriteLine($"{player.GetNameAndTeam()}");
-
+                            Console.WriteLine("");
                         }
                         break;
 
                     case 4:
                         foreach (Manager manager in managerList)  //Tulostetaan managerList
                         {
+                            Console.WriteLine("");
                             Console.WriteLine($"{manager.GetNameAndTeam()}");
-
+                            Console.WriteLine("");
                         }
                         break;
 
                     case 5:
                         foreach (Player player in playerList)  //Tulostetaan playerList
                         {
-                            Console.WriteLine($"{player.GetPlayerId()}");
+                            Console.WriteLine("");
+                           
+                            Console.WriteLine("");
                         }
                         break;
                     default:
