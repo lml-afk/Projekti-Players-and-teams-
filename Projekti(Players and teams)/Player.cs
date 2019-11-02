@@ -10,20 +10,21 @@ namespace Projekti_Players_and_teams_
         private int _playerScore;
         private bool _isCaptain;
         private string _position;
-        private int playerId;
+        
        
 
 
-        public Player(string firstName, string lastName, string team) : base(firstName, lastName, team)
+        public Player(int playerId, string firstName, string lastName, string team, int playerScore) : base(firstName, lastName, team)
         {
-           
+            _playerScore = playerScore;
             _playerId++;
             _playerId = playerId;
         }
 
         
-        public int GetPlayerId()
+        public int GetPlayerId(int playerId)
         {
+            _playerId = playerId;
             return playerId;
         }
     }
