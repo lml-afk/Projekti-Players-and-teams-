@@ -8,8 +8,6 @@ namespace Projekti_Players_and_teams_
 {
     class Program
     {
-
-
         static void Menu()  //Konsolitulostus, valitaan toiminto
 
         {
@@ -19,13 +17,9 @@ namespace Projekti_Players_and_teams_
             Console.WriteLine(" 3 - Print list of players");
             Console.WriteLine(" 4 - Print list of managers");
             Console.WriteLine(" 5 - Sort players by score");
-            Console.WriteLine(" 6 - Quit");
+            Console.WriteLine(" 6 - Print list of players created this session");
+            Console.WriteLine(" 7 - Quit");
             Console.WriteLine("");
-
-            //TODO
-            
-            // id defaulttina?
-       
         }
         static void TeamMenu() // Joukkueenvalinta tulostus
         {
@@ -35,11 +29,8 @@ namespace Projekti_Players_and_teams_
             Console.WriteLine(" 2 - juvan veto");
             Console.WriteLine(" 3 - nurmon näppi");
             Console.WriteLine(" 4 - iisalmen kisailijat");
-            Console.WriteLine("");
-
-          
+            Console.WriteLine(""); 
         }
-
 
         static void Main(string[] args)
         {
@@ -49,21 +40,16 @@ namespace Projekti_Players_and_teams_
             List<Player> playerList = new List<Player>();       //Luodaan Player lista
             do
             {
-                
                 Menu();  //Tulostetaan valikko
-
                 try
                 {
                     input = int.Parse(Console.ReadLine());
                 }
                 catch(Exception)
                 {
-                    Console.WriteLine($"Error, please A insert number between 1 and 6");
+                    Console.WriteLine($"Error, please A insert number between 1 and 7");
                 }
-
-
                 switch (input)
-                
                 {
                     case 1:
                         Console.WriteLine("Insert first name");  //Luodaan pelaaja playerList:iin, kysytään etunimi, sukunimi ja joukkue
@@ -71,7 +57,6 @@ namespace Projekti_Players_and_teams_
                         Console.WriteLine("Insert last name");
                         string lastName = Console.ReadLine();
                         TeamMenu();
-
                         int menuinput = int.Parse(Console.ReadLine());
                         string team = "";
 
@@ -95,18 +80,18 @@ namespace Projekti_Players_and_teams_
                         Random rnd = new Random();
                         int score = rnd.Next(1, 30);
 
-                        int playerId = rnd.Next(1,200);
-
+                        int playerId = Player.GetPlayerId();
+         
                         Player newPlayer = new Player(playerId,firstName, lastName, team,score);
                         playerList.Add(newPlayer);
-                        Console.WriteLine($"New Player {newPlayer.GetNameAndTeam()} added.");
+                        Console.WriteLine($"New Player {newPlayer.GetNameAndTeam()} added with ID: {Player.GetPlayerId()}");
                       
                         var connStringplayer = "Host=localhost;Username=postgres;Password=postgres;Database=PlayersTeams";
                         using (var conn = new NpgsqlConnection(connStringplayer))                         
                         using (var cmd = new NpgsqlCommand("INSERT INTO player VALUES (@playerid,@firstname,@lastname,@team,@score)", conn))
                         {
                                 conn.Open();
-                                cmd.Parameters.AddWithValue("playerid", 4);
+                                cmd.Parameters.AddWithValue("playerid", playerId);
                                 cmd.Parameters.AddWithValue("firstname", firstName);
                                 cmd.Parameters.AddWithValue("lastname", lastName);
                                 cmd.Parameters.AddWithValue("team", team);
@@ -142,25 +127,23 @@ namespace Projekti_Players_and_teams_
                             managerTeam = "iisalmen kisailijat";
                         }
 
-                        Manager newManager = new Manager(managerFirstName, managerLastName, managerTeam);
+                        int managerId = Manager.GetManagerId();
+
+                        Manager newManager = new Manager(managerId,managerFirstName, managerLastName, managerTeam);
                         managerList.Add(newManager);
-                        Console.WriteLine($"New Manager {newManager.GetNameAndTeam()} added.");
-
-
+                        Console.WriteLine($"New Manager {newManager.GetNameAndTeam()} added with ID: {Manager.GetManagerId()}");
 
                         var connStringmanager = "Host=localhost;Username=postgres;Password=postgres;Database=PlayersTeams";
                         using (var conn = new NpgsqlConnection(connStringmanager))
                         using (var cmd = new NpgsqlCommand("INSERT INTO manager VALUES (@managerid,@managerfirstname,@managerlastname,@team)", conn))
                         {
                             conn.Open();
-                            cmd.Parameters.AddWithValue("managerid", 13);
+                            cmd.Parameters.AddWithValue("managerid", managerId);
                             cmd.Parameters.AddWithValue("managerfirstname", managerFirstName);
                             cmd.Parameters.AddWithValue("managerlastname", managerLastName);
                             cmd.Parameters.AddWithValue("team", managerTeam);
                             cmd.ExecuteNonQueryAsync();
                         }
-
-
                         break;
 
                     case 3:
@@ -214,12 +197,19 @@ namespace Projekti_Players_and_teams_
                         break;
                         
                     case 6:
-                        return;
+
+                        foreach (Player player in playerList)
+                        {
+                            Console.WriteLine($"{player.GetNameAndTeam()}");
+                        }
+
+                        break;
+
 
                     default:
                         break;
                 }
-            } while (input > 0 && input < 6);
+            } while (input > 0 && input < 7);
 
             
             
@@ -227,24 +217,3 @@ namespace Projekti_Players_and_teams_
         }
     }
 }
-
-
-
-
-
-
-
-/*
-  var connString = "Host=localhost;Username=postgres;Password=postgres;Database=testi";
-
-            using (var conn = new NpgsqlConnection(connString))
-            {
-                conn.Open();
-                using (var cmd = new NpgsqlCommand("SELECT * FROM testi", conn))
-                using (var reader = cmd.ExecuteReader())
-                while (reader.Read())
-                Console.WriteLine(reader.GetString(1));
-
-            }
-
- */
