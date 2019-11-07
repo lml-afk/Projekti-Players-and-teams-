@@ -8,7 +8,7 @@ namespace Projekti_Players_and_teams_
 {
     class Program
     {
-        static void Menu()  //Konsolitulostus, valitaan toiminto
+        static void Menu()  
 
         {
             Console.WriteLine("");
@@ -17,27 +17,27 @@ namespace Projekti_Players_and_teams_
             Console.WriteLine(" 3 - Print list of players");
             Console.WriteLine(" 4 - Print list of managers");
             Console.WriteLine(" 5 - Sort players by score");
-            Console.WriteLine(" 6 - Print list of players created this session");
+            Console.WriteLine(" 6 - Print list of players and managers created this session");
             Console.WriteLine(" 7 - Quit");
             Console.WriteLine("");
         }
-        static void TeamMenu() // Joukkueenvalinta tulostus
+        static void TeamMenu() 
         {
             Console.WriteLine("");
             Console.WriteLine("Choose team 1-4");
-            Console.WriteLine(" 1 - jumoon pallo");
-            Console.WriteLine(" 2 - juvan veto");
-            Console.WriteLine(" 3 - nurmon näppi");
-            Console.WriteLine(" 4 - iisalmen kisailijat");
+            Console.WriteLine(" 1 - Jumoon Pallo");
+            Console.WriteLine(" 2 - Juvan Veto");
+            Console.WriteLine(" 3 - Nurmon Näppi");
+            Console.WriteLine(" 4 - Iisalmen Kisailijat");
             Console.WriteLine(""); 
         }
 
         static void Main(string[] args)
         {
            
-            int input = 0;                                      //Valikon valinta muuttuja
-            List<Manager> managerList = new List<Manager>();    //Luodaan Manager lista
-            List<Player> playerList = new List<Player>();       //Luodaan Player lista
+            int input = 0;                                    
+            List<Manager> managerList = new List<Manager>();    
+            List<Player> playerList = new List<Player>();      
             do
             {
                 Menu();  //Tulostetaan valikko
@@ -52,29 +52,29 @@ namespace Projekti_Players_and_teams_
                 switch (input)
                 {
                     case 1:
-                        Console.WriteLine("Insert first name");  //Luodaan pelaaja playerList:iin, kysytään etunimi, sukunimi ja joukkue
+                        Console.WriteLine("Insert first name");  //Luodaan olio oliolistaan, käyttäjän tiedoilla
                         string firstName = Console.ReadLine();
                         Console.WriteLine("Insert last name");
                         string lastName = Console.ReadLine();
-                        TeamMenu();
+                        TeamMenu(); //Tulostetaan joukkuevalikko
                         int menuinput = int.Parse(Console.ReadLine());
                         string team = "";
 
                         if (menuinput == 1)
                         {
-                            team = "jumoon pallo";
+                            team = "Jumoon Pallo";
                         }
                         else if (menuinput == 2)
                         {
-                            team = "juvan veto";
+                            team = "Juvan Veto";
                         }
                         else if (menuinput == 3)
                         {
-                            team = "nurmon näppi";
+                            team = "Nurmon Näppi";
                         }
                         else if (menuinput == 4)
                         {
-                            team = "iisalmen kisailijat";
+                            team = "Iisalmen Kisailijat";
                         }
 
                         Random rnd = new Random();
@@ -83,9 +83,9 @@ namespace Projekti_Players_and_teams_
                         int playerId = Player.GetPlayerId();
          
                         Player newPlayer = new Player(playerId,firstName, lastName, team,score);
-                        playerList.Add(newPlayer);
+                        playerList.Add(newPlayer);                                                      //ID tieto oliosta
                         Console.WriteLine($"New Player {newPlayer.GetNameAndTeam()} added with ID: {Player.GetPlayerId()}");
-                      
+                                    //Lisätään oliodata tietokantaan
                         var connStringplayer = "Host=localhost;Username=postgres;Password=postgres;Database=PlayersTeams";
                         using (var conn = new NpgsqlConnection(connStringplayer))                         
                         using (var cmd = new NpgsqlCommand("INSERT INTO player VALUES (@playerid,@firstname,@lastname,@team,@score)", conn))
@@ -102,11 +102,11 @@ namespace Projekti_Players_and_teams_
                         break;
 
                     case 2:
-                        Console.WriteLine("Insert first name"); //Luodaan manageri managerList:iin, kysytään etunimi, sukunimi ja joukkue
+                        Console.WriteLine("Insert first name"); //Luodaan manager olio käyttäjän tiedoilla
                         string managerFirstName = Console.ReadLine();
                         Console.WriteLine("Insert last name");
                         string managerLastName = Console.ReadLine();
-                        TeamMenu();
+                        TeamMenu(); //Valikkotulostus
                         int menuinput2 = int.Parse(Console.ReadLine());
                         string managerTeam = "";
 
@@ -197,10 +197,15 @@ namespace Projekti_Players_and_teams_
                         break;
                         
                     case 6:
-
+                                    //Tulostaa tässä sessiossa luodut oliot
                         foreach (Player player in playerList)
                         {
-                            Console.WriteLine($"{player.GetNameAndTeam()}");
+                            Console.WriteLine($"Player :{player.GetNameAndTeam()}");
+                        }
+
+                        foreach (Manager manager in managerList)
+                        {
+                            Console.WriteLine($"Manager: {manager.GetNameAndTeam()}");
                         }
 
                         break;

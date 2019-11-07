@@ -43,7 +43,6 @@ namespace Projekti_Players_and_teams_
                         managerIdFromDatabase = 0;
                         return managerIdFromDatabase;
                     }
-
                 }
             }
         }
