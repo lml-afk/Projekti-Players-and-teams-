@@ -53,3 +53,9 @@ INSERT INTO public.manager (managerid,firstname,lastname,team) VALUES (4,'Sven',
 /*
 DATABASE NAME PlayersTeams
 */
+
+
+TESTING
+
+1. Lisää tietokanta ylläolevan scriptin mukaisesti.
+2. Ohjelman valikkoa operoidaan numeroilla 1-7
